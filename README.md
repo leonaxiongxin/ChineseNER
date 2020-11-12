@@ -1,5 +1,8 @@
 
-Part of Speech, POS
+
+[中文NER的正确打开方式: 词汇增强方法总结 (从Lattice LSTM到FLAT)](https://zhuanlan.zhihu.com/p/142615620)
+
+## Part of Speech, POS
 
 现代汉语的词可以分为12类。
 
@@ -61,10 +64,17 @@ modal particle 语气助词
 distinguishing word 区分词
 ```
 
-pos_list = ['noun', 'verb', 'adjective', 'numeral', 'classifier', 'pronoun', 'preposition', 'multiword expression', 'time word', 'noun of locality']
+pos_list = ['noun', 'verb', 'adjective', 'numeral', 'classifier', 'pronoun', 'adverb', 'preposition', 'conjunction', 'particle', 'multiword-expression', 'time-word', 'noun-of-locality', 'prefix', 'suffix', 'status-word', 'locative-word', 'distinguishing-word']
 
 
+source domain, train and evaluate
 
 ```bash
 python bert_ner.py --do_lower_case=False --do_train=True --do_eval=True --do_test=False --dataset=MSRA-pos --vocab_file=./chinese_L-12_H-768_A-12/vocab_update.txt --bert_config_file=./chinese_L-12_H-768_A-12/bert_config.json --init_checkpoint=chinese_L-12_H-768_A-12/bert_model.ckpt --max_seq_length=128 --train_batch_size=32 --learning_rate=2e-5 --num_train_epochs=10.0 --dropout_rate=0.5 --output_dir=./output/MSRA-pos/bert_bilstm_crf/ --bilstm=True --crf=True --use_pos=True
+```
+
+target domain, test
+
+```bash
+python bert_ner.py --do_lower_case=False --do_train=False --do_eval=False --do_test=True --dataset=ywevents-pos --vocab_file=./chinese_L-12_H-768_A-12/vocab_update.txt --bert_config_file=./chinese_L-12_H-768_A-12/bert_config.json --init_checkpoint=./output/MSRA-pos/bert_bilstm_crf/model.ckpt-1583 --max_seq_length=128 --train_batch_size=32 --learning_rate=2e-5 --num_train_epochs=1 --dropout_rate=0.5 --output_dir=./output/ywevents-pos/bert_bilstm_crf/ --bilstm=True --crf=True --use_pos=True
 ```

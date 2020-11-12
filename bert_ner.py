@@ -229,7 +229,7 @@ class DataProcessor(object):
                     continue
                 word = line.strip().split(' ')[0]
                 label = line.strip().split(' ')[1]
-                pos = pos2id[line.strip().split(' ')[-1]]
+                pos = pos2id[line.strip().split(' ')[2]]
                 words.append(word)
                 labels.append(label)
                 poses.append(pos)
@@ -332,7 +332,10 @@ def convert_single_example(ex_index, example, label_list, max_seq_length, tokeni
     for i, token in enumerate(tokens):
         ntokens.append(token)
         segment_ids.append(0)
-        label_ids.append(label_map[labels[i]])
+        if labels[i] in label_map:
+            label_ids.append(label_map[labels[i]])
+        else:
+            label_ids.append(label_map['O'])
         pos_ids.append(int(poses[i]))
     # ending signal [SEP]
     ntokens.append("[SEP]")
@@ -784,7 +787,7 @@ def main(_):
 
         # here if the tag is "X" means it belong to its before token for convenient evaluate use
         def Writer(output_test_file, result, batch_tokens, batch_labels, id2label):
-            with open(output_test_file,'w+', encoding='UTF-8') as wf:
+            with open(output_test_file, 'w+', encoding='UTF-8') as wf:
                 
                 if FLAGS.bilstm:
                     predictions = []
@@ -798,7 +801,11 @@ def main(_):
                     if prediction == 0:
                         continue
                     predict = id2label[prediction]
-                    true_label = id2label[batch_labels[i]]
+                    try:
+                        true_id = batch_labels[i]
+                        true_label = id2label[true_id]
+                    except KeyError as e:
+                        print(i, token, true_id)
                     if token in ['[CLS]', '[SEP]']:
                         continue
                     line = "{}\t{}\t{}\n".format(token, true_label, predict)

@@ -4,20 +4,24 @@ import pynlpir
 from processor.data import read_corpus
 
 
-# file_name = 'train'
-# file_input = '../data/MSRA/{}.txt'.format(file_name)
-# file_output = '../data/MSRA-pos/{}.txt'.format(file_name)
-# file_pos_pkl = '../data/MSRA-pos/pos2id.pkl'
-# file_pos_txt = '../data/MSRA-pos/pos2id.txt'
-
-file_name = 'test'
-file_input = '../data/ywevents/{}.txt'.format(file_name)
-file_output = '../data/ywevents-pos/{}.txt'.format(file_name)
+file_name = 'train'
+file_input = '../data/MSRA/{}.txt'.format(file_name)
+file_output = '../data/MSRA-pos/{}.txt'.format(file_name)
 file_pos_pkl = '../data/MSRA-pos/pos2id.pkl'
 file_pos_txt = '../data/MSRA-pos/pos2id.txt'
 
+# file_name = 'test'
+# file_input = '../data/ywevents/{}.txt'.format(file_name)
+# file_output = '../data/ywevents-pos/{}.txt'.format(file_name)
+# file_pos_pkl = '../data/MSRA-pos/pos2id.pkl'
+# file_pos_txt = '../data/MSRA-pos/pos2id.txt'
 
-reserve_pos_list = ['noun', 'verb', 'adjective', 'numeral', 'classifier', 'pronoun', 'preposition', 'multiword-expression', 'time-word', 'noun-of-locality']
+
+reserve_pos_list = [
+    'noun', 'verb', 'adjective', 'numeral', 'classifier', 'pronoun',
+    'adverb', 'preposition', 'conjunction', 'particle',
+    'multiword-expression', 'time-word', 'noun-of-locality', 'prefix', 'suffix', 'status-word', 'locative-word', 'distinguishing-word'
+]
 
 
 def pos2map():
